@@ -1,0 +1,7 @@
+---
+- name: Deploy Base
+  hosts: tag_srv_ansible
+  gather_facts: False
+  become: true
+  roles:
+    - { role: base }
