@@ -36,7 +36,7 @@
 
   - name: Start service nginx, if not started
     ansible.builtin.service:
-      name: docker
+      name: nginx
       state: started
       enabled: yes
   
