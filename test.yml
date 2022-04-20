@@ -23,3 +23,24 @@
   #   service:
   #     name: nginx
   #     state: started
+
+#  - name: Yum Install Packages
+#    yum: name={{item}} state=latest
+#    with_items:
+#       - wget
+
+- name: Install the required rpms
+  yum: 
+    name: "{{ item.name }}"
+    gpcheck: "{{ item.gpgcheck|default(omit) }}"
+    state: latest
+  with_items:
+    - { name: wget }
+    - { name: yum-utils }      
+    
+
+ - name: terraform install
+   unarchive:
+     src: https://releases.hashicorp.com/terraform/1.1.8/terraform_1.1.8_linux_amd64.zip
+     dest: /usr/bin
+     remote_src: True
