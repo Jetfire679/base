@@ -1,33 +1,9 @@
 ---
-- name: Install nginx
+- name: Install base packages
   hosts: localhost
   become: true
 
   tasks:
-  # - name: Add epel-release repo
-  #   yum:
-  #     name: epel-release
-  #     state: present
-
-  - name: Install nginx
-    yum:
-      name: nginx
-      state: present
-
-  # - name: Insert Index Page
-  #   template:
-  #     src: index.html
-  #     dest: /usr/share/nginx/html/index.html
-
-  # - name: Start NGiNX
-  #   service:
-  #     name: nginx
-  #     state: started
-
-#  - name: Yum Install Packages
-#    yum: name={{item}} state=latest
-#    with_items:
-#       - wget
   - name: Add Hashicorp repo
     shell: yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
     args:
@@ -43,19 +19,22 @@
       - { name: yum-utils }      
       - { name: terraform }      
       - { name: docker }      
-      
-  - name: Start service docker, if not started
-    ansible.builtin.service:
-      name: docker
-      state: started
-      enabled: yes
-  
-  - name: Add the user 'joec2-uer' with a group of 'docker'
+      - { name: nginx }      
+
+  - name: Add the user 'ec2-uer' with a group of 'docker'
     ansible.builtin.user:
       name: ec2-user
       comment: ec2-user
       group: docker     
       append: yes 
+
+  - name: Start service docker, if not started
+    ansible.builtin.service:
+      name: docker
+      state: restarted
+      enabled: yes
+  
+
 
   # - name: terraform install
   #   unarchive:
