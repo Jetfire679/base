@@ -44,11 +44,11 @@
       - { name: terraform }      
       - { name: docker }      
       
-- name: Start service docker, if not started
-  ansible.builtin.service:
-    name: docker
-    state: started
-    enabled: yes
+  - name: Start service docker, if not started
+    ansible.builtin.service:
+      name: docker
+      state: started
+      enabled: yes
 
   # - name: terraform install
   #   unarchive:
