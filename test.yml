@@ -49,6 +49,13 @@
       name: docker
       state: started
       enabled: yes
+  
+  - name: Add the user 'joec2-uer' with a group of 'docker'
+    ansible.builtin.user:
+      name: ec2-user
+      comment: ec2-user
+      group: docker     
+      append: yes 
 
   # - name: terraform install
   #   unarchive:
