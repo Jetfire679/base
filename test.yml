@@ -29,10 +29,9 @@
 #    with_items:
 #       - wget
   - name: Add Hashicorp repo
-    yum_repository:
-      name: epel
-      description: EPEL YUM repo
-      baseurl: https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    shell: yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    args:
+      creates: /etc/yum.repos.d/hashicorp.repo
 
   - name: Install the required packages
     yum: 
