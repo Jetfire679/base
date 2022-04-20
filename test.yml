@@ -28,8 +28,13 @@
 #    yum: name={{item}} state=latest
 #    with_items:
 #       - wget
+  - name: Add Hashicorp repo
+    yum_repository:
+      name: epel
+      description: EPEL YUM repo
+      baseurl: https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
 
-  - name: Install the required rpms
+  - name: Install the required packages
     yum: 
       name: "{{ item.name }}"
       gpcheck: "{{ item.gpgcheck|default(omit) }}"
@@ -37,10 +42,14 @@
     with_items:
       - { name: wget }
       - { name: yum-utils }      
+      - { name: terraform }      
       
 
-  - name: terraform install
-    unarchive:
-      src: https://releases.hashicorp.com/terraform/1.1.8/terraform_1.1.8_linux_amd64.zip
-      dest: /usr/bin
-      remote_src: True
+  # - name: terraform install
+  #   unarchive:
+  #     src: https://releases.hashicorp.com/terraform/1.1.8/terraform_1.1.8_linux_amd64.zip
+  #     dest: /usr/bin
+  #     remote_src: True
+
+
+
