@@ -43,11 +43,12 @@
   
   - name: Setup AWS Config file
     command:
-      cmd: aws secretsmanager get-secret-value --secret-id usercdk-675716041761 --region us-east-2 --query SecretString | sed 's/["{}\]//g' | sed 's/:/,/g' | awk -F ',' '{print "aws_access_key_id = " $2}' >> /home/ec2-user/.aws/credentials
-      cmd: 
-      cmd: aws secretsmanager get-secret-value --secret-id usercdk-675716041761 --region us-east-2 --query SecretString | sed 's/["{}\]//g' | sed 's/:/,/g' | awk -F ',' '{print "aws_secret_access_key = " $4}' >> /home/ec2-user/.aws/credentials
-      cmd: echo "[profile demo]" >> /home/ec2-user/.aws/config
-      cmd: echo "region = us-east-2" >> /home/ec2-user/.aws/config
+      cmd: ansible-galaxy collection install amazon.aws
+
+  - name: Extract something secrets from Secret Manager
+    debug:
+      msg: "{{ lookup('amazon.aws.aws_secret', 'usercdk-675716041761')}}"
+
 
   # - name: terraform install
   #   unarchive:
