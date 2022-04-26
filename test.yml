@@ -41,14 +41,6 @@
       state: started
       enabled: yes
   
-  - name: Setup AWS Config file
-    command:
-      cmd: ansible-galaxy collection install amazon.aws
-
-  - name: Extract something secrets from Secret Manager
-    debug:
-      msg: "{{ lookup('amazon.aws.aws_secret', 'usercdk-675716041761')}}"
-
 
   # - name: terraform install
   #   unarchive:
