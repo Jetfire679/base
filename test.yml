@@ -21,6 +21,7 @@
       - { name: docker }      
       - { name: nginx }      
       - { name: jq }
+      - { name: vault }
 
   - name: Add the user 'ec2-uer' with a group of 'docker'
     ansible.builtin.user:
