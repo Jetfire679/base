@@ -42,7 +42,10 @@
       state: started
       enabled: yes
   
-
+  - name: Confirm that 200 OK response is returned
+    uri:
+      url: "https://google.com"
+      status_code: 200
   # - name: terraform install
   #   unarchive:
   #     src: https://releases.hashicorp.com/terraform/1.1.8/terraform_1.1.8_linux_amd64.zip
