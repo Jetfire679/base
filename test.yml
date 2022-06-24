@@ -4,26 +4,38 @@
   become: true
 
   tasks:
-  - name: Add Hashicorp repo
-    shell: yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-    args:
-      creates: /etc/yum.repos.d/hashicorp.repo
-
-  - name: Install the required packages
+  - name: Install the wget and yum utils
     yum: 
       name: "{{ item.name }}"
       gpcheck: "{{ item.gpgcheck|default(omit) }}"
       state: latest
     with_items:
       - { name: wget }
-      - { name: yum-utils }      
+      - { name: yum-utils }     
+
+  - name: Add Hashicorp repo
+    shell: yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    args:
+      creates: /etc/yum.repos.d/hashicorp.repo
+
+  - name: Add Docker repo
+    shell: yum-config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+    args:
+      creates: /etc/yum.repos.d/docker-ce.repo
+
+  - name: Install the required packages
+    yum: 
+      name: "{{ item.name }}"
+      gpcheck: "{{ item.gpgcheck|default(omit) }}"
+      state: latest
+    with_items: 
       - { name: terraform }      
       - { name: docker }      
       - { name: nginx }      
       - { name: jq }
       - { name: vault }
 
-  - name: Add the user 'ec2-uer' with a group of 'docker'
+  - name: Add the user 'ec2-user' with a group of 'docker'
     ansible.builtin.user:
       name: ec2-user
       comment: ec2-user
@@ -51,12 +63,12 @@
   #     src: https://releases.hashicorp.com/terraform/1.1.8/terraform_1.1.8_linux_amd64.zip
   #     dest: /usr/bin
   #     remote_src: True
-  - name: Install bottle within a user home directory
+  - name: Install boto3
     ansible.builtin.pip:
       name: boto3
       extra_args: --user
 
-  - name: Install bottle within a user home directory
+  - name: Install kafka-python
     ansible.builtin.pip:
       name: kafka-python
       extra_args: --user
