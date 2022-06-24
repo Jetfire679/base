@@ -23,6 +23,8 @@
       - { name: jq }
       # - { name: vault }
       - { name: java-11-amazon-corretto-headless }      
+      - { name: python3 }
+      - { name: nc }      
       
 
   - name: Add the user 'ec2-user' with a group of 'docker'
