@@ -4,37 +4,24 @@
   become: true
 
   tasks:
-  - name: Install the wget and yum utils
-    yum: 
-      name: "{{ item.name }}"
-      gpcheck: "{{ item.gpgcheck|default(omit) }}"
-      state: latest
-    with_items:
-      - { name: wget }
-      - { name: yum-utils }     
-      - { name: nginx }      
-      - { name: jq }
-      - { name: vault }      
-      - { name: terraform }         
-
   - name: Add Hashicorp repo
     shell: yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
     args:
       creates: /etc/yum.repos.d/hashicorp.repo
-
-  - name: Add Docker repo
-    shell: yum-config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
-    args:
-      creates: /etc/yum.repos.d/docker-ce.repo
 
   - name: Install the required packages
     yum: 
       name: "{{ item.name }}"
       gpcheck: "{{ item.gpgcheck|default(omit) }}"
       state: latest
-    with_items:    
+    with_items:
+      - { name: wget }
+      - { name: yum-utils }      
+      - { name: terraform }      
       - { name: docker }      
-
+      - { name: nginx }      
+      - { name: jq }
+      - { name: vault }
 
   - name: Add the user 'ec2-user' with a group of 'docker'
     ansible.builtin.user:
