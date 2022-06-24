@@ -12,6 +12,10 @@
     with_items:
       - { name: wget }
       - { name: yum-utils }     
+      - { name: nginx }      
+      - { name: jq }
+      - { name: vault }      
+      - { name: terraform }         
 
   - name: Add Hashicorp repo
     shell: yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
@@ -28,12 +32,9 @@
       name: "{{ item.name }}"
       gpcheck: "{{ item.gpgcheck|default(omit) }}"
       state: latest
-    with_items: 
-      - { name: terraform }      
+    with_items:    
       - { name: docker }      
-      - { name: nginx }      
-      - { name: jq }
-      - { name: vault }
+
 
   - name: Add the user 'ec2-user' with a group of 'docker'
     ansible.builtin.user:
