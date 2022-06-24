@@ -17,11 +17,13 @@
     with_items:
       - { name: wget }
       - { name: yum-utils }      
-      - { name: terraform }      
+      # - { name: terraform }      
       - { name: docker }      
-      - { name: nginx }      
+      # - { name: nginx }      
       - { name: jq }
-      - { name: vault }
+      # - { name: vault }
+      - { name: java-11-amazon-corretto-headless }      
+      
 
   - name: Add the user 'ec2-user' with a group of 'docker'
     ansible.builtin.user:
