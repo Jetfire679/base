@@ -3,6 +3,10 @@
   hosts: localhost
   become: true
 
+  vars: 
+    - installation_dir : /usr/local/kafka 
+    # - installation_dir : /opt/kafka
+
   tasks:
   - name: Add Hashicorp repo
     shell: yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
@@ -41,16 +45,17 @@
       state: restarted
       enabled: yes
 
-  - name: Start service nginx, if not started
-    ansible.builtin.service:
-      name: nginx
-      state: started
-      enabled: yes
+  # - name: Start service nginx, if not started
+  #   ansible.builtin.service:
+  #     name: nginx
+  #     state: started
+  #     enabled: yes
   
-  - name: Confirm that 200 OK response is returned
-    uri:
-      url: "https://google.com"
-      status_code: 200
+  # - name: Confirm that 200 OK response is returned
+  #   uri:
+  #     url: "https://google.com"
+  #     status_code: 200
+
   # - name: terraform install
   #   unarchive:
   #     src: https://releases.hashicorp.com/terraform/1.1.8/terraform_1.1.8_linux_amd64.zip
@@ -66,6 +71,39 @@
     ansible.builtin.pip:
       name: kafka-python
       extra_args: --user
+
+  - name: Create a group 
+    become: yes
+    group:
+      name: kafka
+      state: present
+  - name: Create an user 
+    become: yes
+    user:
+      name: kafka
+      state: present
+      group: kafka
+  - name: Create a Directory 
+    become: yes
+    file:
+      path: "{{installation_dir}}"
+      state: directory
+      mode: 0755
+      owner: kafka
+      group: kafka
+  - name: Download Kafka and Unzip 
+    become: yes
+    become_user: kafka
+    unarchive:
+      src: https://archive.apache.org/dist/kafka/2.6.2/kafka_2.13-2.6.2.tgz
+      dest: "{{installation_dir}}"
+      mode: 0755
+      remote_src: yes
+  - name: Move all the files to parent Directory
+    become: yes
+    become_user: kafka
+    shell:
+      mv {{installation_dir}}/kafka_*/* {{installation_dir}}/.
 
 
 
