@@ -25,7 +25,8 @@
       - { name: java-11-amazon-corretto-headless }      
       - { name: python3 }
       - { name: nc }      
-      
+      - { name: python-pip }      
+            
 
   - name: Add the user 'ec2-user' with a group of 'docker'
     ansible.builtin.user:
@@ -55,6 +56,7 @@
   #     src: https://releases.hashicorp.com/terraform/1.1.8/terraform_1.1.8_linux_amd64.zip
   #     dest: /usr/bin
   #     remote_src: True
+
   - name: Install boto3
     ansible.builtin.pip:
       name: boto3
