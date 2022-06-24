@@ -51,6 +51,16 @@
   #     src: https://releases.hashicorp.com/terraform/1.1.8/terraform_1.1.8_linux_amd64.zip
   #     dest: /usr/bin
   #     remote_src: True
+  - name: Install bottle within a user home directory
+    ansible.builtin.pip:
+      name: boto3
+      extra_args: --user
+
+  - name: Install bottle within a user home directory
+    ansible.builtin.pip:
+      name: kafka-python
+      extra_args: --user
+
 
 
 
