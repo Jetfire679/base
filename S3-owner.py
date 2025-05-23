@@ -34,3 +34,24 @@ for event in response['Events']:
         break
 else:
     print(f"No CreateBucket event found for bucket: {bucket_name}")
+
+
+import boto3
+
+cf = boto3.client('cloudformation')
+
+def find_bucket_in_stacks(bucket_name):
+    stacks = cf.list_stacks(StackStatusFilter=['CREATE_COMPLETE', 'UPDATE_COMPLETE'])['StackSummaries']
+    for stack in stacks:
+        resources = cf.list_stack_resources(StackName=stack['StackName'])['StackResourceSummaries']
+        for res in resources:
+            if res['ResourceType'] == 'AWS::S3::Bucket' and res['PhysicalResourceId'] == bucket_name:
+                return stack['StackName']
+    return None
+
+bucket_name = "your-bucket-name"
+stack_name = find_bucket_in_stacks(bucket_name)
+if stack_name:
+    print(f"Bucket was created by stack: {stack_name}")
+else:
+    print("No CloudFormation stack found for this bucket.")
