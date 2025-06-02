@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: StackSet template to associate a VPC with a Resolver Query Logging configuration
+
+Mappings:
+  AccountRegionToVPC:
+    "111122223333-us-east-1":
+      VPC: "vpc-0aaa1111aaa1111aa"
+    "111122223333-us-west-2":
+      VPC: "vpc-0bbb2222bbb2222bb"
+    "444455556666-us-east-1":
+      VPC: "vpc-0ccc3333ccc3333cc"
+
+Parameters:
+  QueryLogConfigId:
+    Type: String
+    Description: "ID of the Route 53 Resolver Query Logging Configuration"
+
+Resources:
+  ResolverQueryLogConfigAssociation:
+    Type: AWS::Route53Resolver::ResolverQueryLoggingConfigAssociation
+    Properties:
+      ResolverQueryLogConfigId:
+        Ref: QueryLogConfigId
+      ResourceId:
+        Fn::FindInMap:
+          - AccountRegionToVPC
+          - Fn::Sub: "${AWS::AccountId}-${AWS::Region}"
+          - VPC
