@@ -1,0 +1,6 @@
+aws logs start-query \
+  --log-group-name "/aws/route53/query" \
+  --start-time $(date -v-1H +%s) \
+  --end-time $(date +%s) \
+  --query-string 'fields @timestamp, @message | filter @message like /example\.com/' \
+  --region us-east-1
