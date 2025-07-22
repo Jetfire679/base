@@ -13,7 +13,10 @@ query_string = """
 fields @timestamp, queryName = parse_json(@message).queryName 
 | filter queryName like /(^|\\.)example\\.com\\./
 """
-
+query_string = (
+    "fields @timestamp, queryName = parse_json(@message).queryName "
+    "| filter queryName like /(^|\\.)example\\.com\\./"
+)
 # ---- TIME RANGE ----
 start_time = int(datetime(2025, 7, 21, 0, 0).timestamp())
 end_time = int(datetime(2025, 7, 21, 23, 59, 59).timestamp())
